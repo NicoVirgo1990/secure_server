@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Funzione per cambiare la password di un utente
+change_password() {
+  local username=$1
+  echo "Cambiare la password per l'utente $username"
+  passwd $username
+  if [[ $? -ne 0 ]]; then
+    echo "Errore nel cambiare la password per l'utente $username"
+    exit 1
+  fi
+  echo "Password cambiata con successo per l'utente $username"
+}
+
+# Cambiare la password di root
+echo "Cambiare la password di root"
+passwd root
+if [[ $? -ne 0 ]]; then
+  echo "Errore nel cambiare la password di root"
+  exit 1
+fi
+echo "Password cambiata con successo per root"
+
+# Richiedere il nome del nuovo utente
+read -p "Inserisci il nome del nuovo utente da creare: " user
+
+# Verifica se l'utente esiste già
+if id "$user" &>/dev/null; then
+  echo "L'utente $user esiste già"
+else
+  # Creare il nuovo utente
+  echo "Creazione del nuovo utente $user"
+  useradd -m $user
+  if [[ $? -ne 0 ]]; then
+    echo "Errore nella creazione dell'utente $user"
+    exit 1
+  fi
+  echo "Utente $user creato con successo"
+fi
+
+# Cambiare la password per il nuovo utente
+change_password $user
+
+# Impedire l'accesso SSH a root
+echo "Modifica la configurazione SSH per impedire l'accesso root"
+sshd_config_file="/etc/ssh/sshd_config"
+if grep -q "^PermitRootLogin" $sshd_config_file; then
+  sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' $sshd_config_file
+else
+  echo "PermitRootLogin no" >> $sshd_config_file
+fi
+
+# Riavviare il servizio SSH
+echo "Riavvio del servizio SSH"
+systemctl restart ssh
+if [[ $? -ne 0 ]]; then
+  echo "Errore nel riavvio del servizio SSH"
+  exit 1
+fi
+echo "Servizio SSH riavviato con successo"
+
+echo "Script completato con successo"
