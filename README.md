@@ -1,17 +1,16 @@
-Server Configuration Script
+Server Setup Script
 
-Welcome to the Server Configuration Script! This script streamlines the initial setup of a Debian/Ubuntu server, covering essential tasks like password management, user creation, SSH configuration, and the installation of WireGuard VPN.
-🛠️ Features
+This script makes it easy to set up your Debian/Ubuntu server. It does the following:
 
-    Change Root Password: Secure your server by updating the root password.
-    Create a New User: Easily create a new user and set their password.
-    Configure SSH Access: Prevent direct root access via SSH for enhanced security.
-    Install WireGuard: Set up WireGuard for a secure VPN connection.
+    Changes the root password
+    Creates a new user and sets their password
+    Configures SSH to block root access
+    Installs WireGuard VPN
 
-🚀 Getting Started
+How to Use
 1. Clone the Repository
 
-If you haven’t already cloned the repository, use the following command:
+If you haven’t cloned the repository yet, do so with:
 
 bash
 
@@ -20,7 +19,7 @@ cd secure_server
 
 2. Make the Script Executable
 
-Ensure the script has executable permissions:
+Set the script as executable:
 
 bash
 
@@ -34,28 +33,16 @@ bash
 
 sudo ./setup.sh
 
-✨ What Does It Do?
-Install WireGuard
+What the Script Does
 
-    Updates the package list and installs WireGuard with a single command, ensuring your server is ready for secure VPN connections.
+    Installs WireGuard: Prepares your server for VPN use.
+    Changes Root Password: Asks you to set a new password for the root user.
+    Creates a New User: Prompts for a new user’s name and password.
+    Configures SSH: Updates SSH settings to disable root login and restarts the service.
 
-Change Root Password
+Example Output
 
-    Prompts you to set a new password for the root user, enhancing your server’s security.
-
-Create a New User
-
-    Asks for a new user name and creates the user if it doesn’t already exist.
-    Prompts for a password and sets it for the newly created user.
-
-Configure SSH
-
-    Modifies the SSH configuration to prevent direct root access, improving overall server security.
-    Restarts the SSH service to apply the new configuration.
-
-💬 Example Output
-
-When you run the script, you might see output like this:
+When you run the script, you’ll see messages like this:
 
 plaintext
 
@@ -64,53 +51,35 @@ Installing WireGuard...
 
 Changing root password...
 [Enter new root password]
-Password successfully changed for root
+Password changed for root
 
-Enter the name of the new user to create: <username>
-Creating new user <username>...
-User <username> successfully created
+Enter the name of the new user: <username>
+Creating user <username>...
+User <username> created
 
 Changing password for user <username>...
 [Enter new password for <username>]
-Password successfully changed for user <username>
+Password changed for user <username>
 
-Modifying SSH configuration to disable root access...
-SSH service successfully restarted
+Updating SSH configuration...
+SSH service restarted
 
 Script completed successfully
 
-⚙️ Configuration Options
+Contributing
 
-You can customize how the script handles remote repository interactions. Set up your Git configuration to manage diverging branches:
-
-    Merge Changes:
-
-    bash
-
-git config pull.rebase false
-
-Rebase Changes:
-
-bash
-
-git config pull.rebase true
-
-Fast-forward Only:
-
-bash
-
-    git config pull.ff only
-
-📝 Contributing
-
-We welcome contributions! To contribute:
+To contribute:
 
     Fork the repository.
-    Create a new branch for your changes (git checkout -b feature-branch).
-    Make your changes and commit them (git commit -am 'Add new feature').
-    Push your branch (git push origin feature-branch).
+    Create a new branch (git checkout -b your-branch).
+    Make changes and commit (git commit -am 'Description').
+    Push your branch (git push origin your-branch).
     Open a Pull Request.
 
-📜 License
+License
 
-This project is licensed under the MIT License. See the LICENSE file for details
+This project is licensed under the MIT License. See LICENSE for details.
+
+Thanks for using the Server Setup Script! If you need help, open an issue on our GitHub page.
+
+This version keeps things simple and clear, making it easy to understand and follow.
