@@ -1,85 +1,57 @@
-Server Setup Script
+# Secure Server and WireGuard Configuration Scripts
 
-This script makes it easy to set up your Debian/Ubuntu server. It does the following:
+This repository contains two scripts designed for server security and VPN configuration.
 
-    Changes the root password
-    Creates a new user and sets their password
-    Configures SSH to block root access
-    Installs WireGuard VPN
+## Script 1: `secure_server`
 
-How to Use
-1. Clone the Repository
+The `secure_server` script performs the following tasks:
+1. **Disables Root Access via SSH:** Modifies SSH configuration to prevent root login.
+2. **Changes Root Password:** Prompts the user to set a new root password.
+3. **Creates a New User:** Generates a new user and prompts for the user's password.
+4. **Installs WireGuard:** Automatically installs WireGuard VPN software.
 
-If you haven’t cloned the repository yet, do so with:
+### Usage
 
-bash
+1. Make the script executable:
+    ```bash
+    chmod +x secure_server
+    ```
+2. Run the script with root privileges:
+    ```bash
+    sudo ./secure_server
+    ```
 
-git clone git@github.com:NicoVirgo1990/secure_server.git
-cd secure_server
+## Script 2: `wireguard_setup`
 
-2. Make the Script Executable
+The `wireguard_setup` script configures WireGuard with a simple client-server setup:
+1. **Generates Configuration Files:** Creates basic configuration for both server and client.
+2. **Includes Preshared Key:** Automatically generates and includes a preshared key in the configurations.
+3. **Endpoint Placeholder:** The user must manually insert the server endpoint into the client configuration.
 
-Set the script as executable:
+### Usage
 
-bash
+1. Make the script executable:
+    ```bash
+    chmod +x wireguard_setup
+    ```
+2. Run the script with root privileges:
+    ```bash
+    sudo ./wireguard_setup
+    ```
 
-chmod +x setup.sh
+3. **Complete the Setup:**
+    - Open the client configuration file (`wg-client.conf`) and insert the server endpoint (IP/hostname) into the `[Peer]` section.
 
-3. Run the Script
+## Prerequisites
 
-Execute the script with root or sudo privileges:
+- **`secure_server`** requires sudo privileges to modify system settings and install packages.
+- **`wireguard_setup`** requires sudo privileges to configure network settings and create configuration files.
 
-bash
+## License
 
-sudo ./setup.sh
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-What the Script Does
+## Contact
 
-    Installs WireGuard: Prepares your server for VPN use.
-    Changes Root Password: Asks you to set a new password for the root user.
-    Creates a New User: Prompts for a new user’s name and password.
-    Configures SSH: Updates SSH settings to disable root login and restarts the service.
+For questions or issues, please open an issue on this repository or contact [info@kamesystem.com](mailto:info@kamesystem.com).
 
-Example Output
-
-When you run the script, you’ll see messages like this:
-
-plaintext
-
-Installing WireGuard...
-[...installation output...]
-
-Changing root password...
-[Enter new root password]
-Password changed for root
-
-Enter the name of the new user: <username>
-Creating user <username>...
-User <username> created
-
-Changing password for user <username>...
-[Enter new password for <username>]
-Password changed for user <username>
-
-Updating SSH configuration...
-SSH service restarted
-
-Script completed successfully
-
-Contributing
-
-To contribute:
-
-    Fork the repository.
-    Create a new branch (git checkout -b your-branch).
-    Make changes and commit (git commit -am 'Description').
-    Push your branch (git push origin your-branch).
-    Open a Pull Request.
-
-License
-
-This project is licensed under the MIT License. See LICENSE for details.
-
-Thanks for using the Server Setup Script! If you need help, open an issue on our GitHub page.
-
-This version keeps things simple and clear, making it easy to understand and follow.

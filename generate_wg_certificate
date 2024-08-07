@@ -1,0 +1,54 @@
+#!/bin/bash
+
+generate_keys() {
+   
+    wg genkey | sudo tee private.key
+    sudo chmod go= private.key
+
+    
+    sudo cat private.key | wg pubkey | sudo tee public.key
+
+  
+    wg genkey | sudo tee privatePeer.key
+    sudo chmod go= privatePeer.key
+
+  
+    sudo cat privatePeer.key | wg pubkey | sudo tee publicPeer.key
+
+  
+    sudo wg genpsk > psk
+
+generate_config() {
+    # data 
+    SERVER_IP="10.8.0.1/24"
+    PEER_IP="10.8.0.2/24"
+    LISTEN_PORT="51820"  # Porta di ascolto predefinita, può essere cambiata
+
+ # server configuration
+  echo "[Interface]
+Address = $SERVER_IP
+ListenPort = $LISTEN_PORT
+PrivateKey = $(sudo cat private.key)
+
+[Peer]
+PublicKey = $(sudo cat publicPeer.key)
+PresharedKey = $(sudo cat psk)
+AllowedIPs = 10.8.0.2/32" | sudo tee wg0.conf > /dev/null
+
+ # peer configuration
+ echo "[Interface]
+Address = $PEER_IP
+PrivateKey = $(sudo cat privatePeer.key)
+
+[Peer]
+PublicKey = $(sudo cat public.key)
+PresharedKey = $(sudo cat psk)
+AllowedIPs = 0.0.0.0/0
+Endpoint = :$LISTEN_PORT" | sudo tee wg0Peer.conf > /dev/null
+}
+
+ # functions execution
+generate_keys
+generate_config
+
+echo "wireguard configuration files are generated with success"
