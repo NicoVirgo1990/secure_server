@@ -1,51 +1,52 @@
 #!/bin/bash
 
+# Update and upgrade system packages
 apt update
-apt upgrade
+apt upgrade -y
 
-# Funzione per cambiare la password di un utente
+# Function to change the password of a user
 change_password() {
   local username=$1
-  echo "Cambiare la password per l'utente $username"
+  echo "Changing the password for user $username"
   passwd $username
   if [[ $? -ne 0 ]]; then
-    echo "Errore nel cambiare la password per l'utente $username"
+    echo "Error changing the password for user $username"
     exit 1
   fi
-  echo "Password cambiata con successo per l'utente $username"
+  echo "Password successfully changed for user $username"
 }
 
-# Cambiare la password di root
-echo "Cambiare la password di root"
+# Change the root password
+echo "Changing the root password"
 passwd root
 if [[ $? -ne 0 ]]; then
-  echo "Errore nel cambiare la password di root"
+  echo "Error changing the root password"
   exit 1
 fi
-echo "Password cambiata con successo per root"
+echo "Root password successfully changed"
 
-# Richiedere il nome del nuovo utente
-read -p "Inserisci il nome del nuovo utente da creare: " user
+# Prompt for the new username
+read -p "Enter the new username to create: " user
 
-# Verifica se l'utente esiste già
+# Check if the user already exists
 if id "$user" &>/dev/null; then
-  echo "L'utente $user esiste già"
+  echo "User $user already exists"
 else
-  # Creare il nuovo utente
-  echo "Creazione del nuovo utente $user"
+  # Create the new user
+  echo "Creating the new user $user"
   useradd -m $user
   if [[ $? -ne 0 ]]; then
-    echo "Errore nella creazione dell'utente $user"
+    echo "Error creating user $user"
     exit 1
   fi
-  echo "Utente $user creato con successo"
+  echo "User $user successfully created"
 fi
 
-# Cambiare la password per il nuovo utente
+# Change the password for the new user
 change_password $user
 
-# Impedire l'accesso SSH a root
-echo "Modifica la configurazione SSH per impedire l'accesso root"
+# Disable root SSH login
+echo "Modifying SSH configuration to disable root access"
 sshd_config_file="/etc/ssh/sshd_config"
 if grep -q "^PermitRootLogin" $sshd_config_file; then
   sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' $sshd_config_file
@@ -53,13 +54,65 @@ else
   echo "PermitRootLogin no" >> $sshd_config_file
 fi
 
-# Riavviare il servizio SSH
-echo "Riavvio del servizio SSH"
+# Restart the SSH service
+echo "Restarting the SSH service"
 systemctl restart ssh
 if [[ $? -ne 0 ]]; then
-  echo "Errore nel riavvio del servizio SSH"
+  echo "Error restarting the SSH service"
   exit 1
 fi
-echo "Servizio SSH riavviato con successo"
+echo "SSH service successfully restarted"
 
-echo "Script completato con successo"
+# Install security tools: fail2ban, suricata, auditd, rkhunter, and lynis
+echo "Installing security tools: fail2ban, suricata, auditd, rkhunter, and lynis"
+
+# Install fail2ban
+apt install -y fail2ban
+if [[ $? -ne 0 ]]; then
+  echo "Error installing fail2ban"
+  exit 1
+fi
+echo "fail2ban successfully installed"
+
+# Install suricata
+apt install -y suricata
+if [[ $? -ne 0 ]]; then
+  echo "Error installing suricata"
+  exit 1
+fi
+echo "suricata successfully installed"
+
+# Install auditd
+apt install -y auditd
+if [[ $? -ne 0 ]]; then
+  echo "Error installing auditd"
+  exit 1
+fi
+echo "auditd successfully installed"
+
+# Install rkhunter (Rootkit Hunter)
+apt install -y rkhunter
+if [[ $? -ne 0 ]]; then
+  echo "Error installing rkhunter"
+  exit 1
+fi
+echo "rkhunter successfully installed"
+
+# Update rkhunter database
+echo "Updating rkhunter database"
+rkhunter --update
+if [[ $? -ne 0 ]]; then
+  echo "Error updating rkhunter database"
+  exit 1
+fi
+echo "rkhunter database successfully updated"
+
+# Install Lynis for security auditing
+apt install -y lynis
+if [[ $? -ne 0 ]]; then
+  echo "Error installing Lynis"
+  exit 1
+fi
+echo "Lynis successfully installed"
+
+echo "Script completed successfully"
