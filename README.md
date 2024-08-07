@@ -8,6 +8,10 @@ The `secure_server` script performs the following tasks:
 1. **Disables Root Access via SSH:** Modifies SSH configuration to prevent root login.
 2. **Changes Root Password:** Prompts the user to set a new root password.
 3. **Creates a New User:** Generates a new user and prompts for the user's password.
+4. **Installs Lynis:** Automatically installs lynis
+5. **Installs Suricata:** Automatically installs Suricata
+6. **Installs RkHunter:** Automatically installs RkHunter
+7. **Installs Auditd:** Automatically installs Auditd
 
 
 ### Usage
