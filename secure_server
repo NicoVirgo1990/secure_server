@@ -15,16 +15,6 @@ change_password() {
   echo "Password cambiata con successo per l'utente $username"
 }
 
-# Installare WireGuard
-echo "Installazione di WireGuard"
-apt update
-apt install -y wireguard
-if [[ $? -ne 0 ]]; then
-  echo "Errore nell'installazione di WireGuard"
-  exit 1
-fi
-echo "WireGuard installato con successo"
-
 # Cambiare la password di root
 echo "Cambiare la password di root"
 passwd root
