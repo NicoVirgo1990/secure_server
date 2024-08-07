@@ -1,5 +1,15 @@
 #!/bin/bash
 
+echo "WireGuard Installation"
+apt update
+apt install -y wireguard
+if [[ $? -ne 0 ]]; then 
+  echo "Error on  WireGuard installation"
+  exit 1
+fi
+echo "WireGuard installed!"
+
+
 generate_keys() {
    
     wg genkey | sudo tee private.key
@@ -17,6 +27,7 @@ generate_keys() {
 
   
     sudo wg genpsk > psk
+}
 
 generate_config() {
     # data 
@@ -47,7 +58,8 @@ AllowedIPs = 0.0.0.0/0
 Endpoint = :$LISTEN_PORT" | sudo tee wg0Peer.conf > /dev/null
 }
 
- # functions execution
+#functions execution
+
 generate_keys
 generate_config
 

@@ -8,7 +8,7 @@ The `secure_server` script performs the following tasks:
 1. **Disables Root Access via SSH:** Modifies SSH configuration to prevent root login.
 2. **Changes Root Password:** Prompts the user to set a new root password.
 3. **Creates a New User:** Generates a new user and prompts for the user's password.
-4. **Installs WireGuard:** Automatically installs WireGuard VPN software.
+
 
 ### Usage
 
@@ -27,6 +27,7 @@ The `wireguard_setup` script configures WireGuard with a simple client-server se
 1. **Generates Configuration Files:** Creates basic configuration for both server and client.
 2. **Includes Preshared Key:** Automatically generates and includes a preshared key in the configurations.
 3. **Endpoint Placeholder:** The user must manually insert the server endpoint into the client configuration.
+4. **Installs WireGuard:** Automatically installs WireGuard VPN software
 
 ### Usage
 
